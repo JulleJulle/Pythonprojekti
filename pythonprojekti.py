@@ -1,8 +1,8 @@
 import random
 
-# Pelaajan alkutiedot
-def initialize_player():
-    return {
+# Pelaajan alkutiedot roolin mukaan
+def initialize_player(role):
+    base_player = {
         "health": 100,
         "gold": 0,
         "inventory": {
@@ -17,18 +17,40 @@ def initialize_player():
         "experience": 0,
         "level": 1
     }
+    if role == "velho":
+        base_player["health"] = 80
+        base_player["inventory"]["potions"] = 3
+    elif role == "sotilas":
+        base_player["health"] = 120
+        base_player["inventory"]["sword"] = True
+        shop_items["sword"]["bought"] = True 
+    elif role == "seikkailija":
+        base_player["gold"] = 10
+        base_player["inventory"]["food"] = random.randint(0,2)
+        base_player["inventory"]["potions"] = random.randint(0,1)
+        base_player["inventory"]["keys"] = random.randint(0,1)
+    return base_player
 
-player = initialize_player()
+# Pelaajan roolin valinta
+def choose_role():
+    roles = ["velho", "sotilas", "seikkailija"]
+    print("Valitse roolisi:")
+    print("Roolit:\n-Velho, synnyt potioneiden kanssa\n-Sotilas, syntyy miekan kanssa\n-Seikkailija. syntyy satunnaisten apuvälineiden kanssa")
+    choice = input("Rooli: ").lower().strip()
+    while choice not in roles:
+        print("Virheellinen valinta. Yritä uudelleen.")
+        choice = input("Rooli: ").lower().strip()
+    return choice
 
-# Vihollinen lista ja lore (lisätty helppoja vihollisia ja tehty vaikeammista vaikeampia)
+# Vihollinen lista ja lore
 enemies = {
     "rat": {"health": 5, "gold": 1, "lore": "Pieni rotta, joka etsii ruokaa.", "strength": 1},
     "snake": {"health": 8, "gold": 2, "lore": "Vaarallinen käärme, joka lymyilee ruohikossa.", "strength": 1},
     "wolf": {"health": 12, "gold": 4, "lore": "Nälkäinen susi, joka vaeltelee metsissä.", "strength": 2},
     "goblin": {"health": 15, "gold": 5, "lore": "Pieni ja viekas olento, joka rakastaa kultaa.", "strength": 2},
     "orc": {"health": 25, "gold": 10, "lore": "Suuri ja vahva hirviö, joka asuu luolissa.", "strength": 3},
-    "troll": {"health": 40, "gold": 15, "lore": "Hidas mutta voimakas hirviö, joka asuu siltojen alla.", "strength": 5},
-    "undead_knight": {"health": 50, "gold": 30, "lore": "Muinaisen kuninkaan kirous, joka on noussut haudastaan.", "strength": 6},
+    "troll": {"health": 50, "gold": 15, "lore": "Hidas mutta voimakas hirviö, joka asuu siltojen alla.", "strength": 5},
+    "undead_knight": {"health": 60, "gold": 30, "lore": "Muinaisen kuninkaan kirous, joka on noussut haudastaan.", "strength": 6},
     "giant_spider": {"health": 35, "gold": 12, "lore": "Pelottava hämähäkki, joka kutoo verkkoja metsiin.", "strength": 4},
     "bandit": {"health": 20, "gold": 7, "lore": "Konna, joka ryöstää kulkijoita teiden varsilla.", "strength": 3},
     "dragon": {"health": 100, "gold": 50, "lore": "Muinaisaikojen peto, joka vartioi aarretta.", "strength": 10}
@@ -48,7 +70,7 @@ shop_items = {
 # Dungeoneita ja lore
 dungeons = {
     "Goblin Cave": {"lore": "Pimeä luola täynnä goblineja. Kuuluu kumea kähinä.", "enemies": ["goblin", "goblin", "orc"]},
-    "Orc Camp": {"lore": "Vaarallinen leiri, jossa orkit harjoittelevat taistelua.", "enemies": ["orc", "orc", "troll"]},
+    "Orc Camp": {"lore": "Vaarallinen leiri, jossa orkit harjoittelevat taistelemista.", "enemies": ["orc", "orc", "troll"]},
     "Ancient Ruins": {"lore": "Muinaisten aikojen rauniot, joissa kummittelee.", "enemies": ["undead_knight", "troll", "dragon"]},
     "Bandit Hideout": {"lore": "Rosvojen piilopaikka, jossa he suunnittelevat ryöstöretkiään.", "enemies": ["bandit", "bandit", "orc"]},
     "Spider Nest": {"lore": "Hämähäkkien pesä, joka on täynnä verkkoja ja vaaroja.", "enemies": ["giant_spider", "giant_spider", "troll"]}
@@ -85,7 +107,7 @@ def fight_enemy(enemy):
         enemy_health = enemies[enemy]["health"]
         while enemy_health > 0 and player["health"] > 0:
             print_status()
-            print("\nValitse toiminto: HYÖKKÄÄ/PARANNA/PAKKENE")
+            print("\nValitse toiminto: HYÖKKÄÄ/PARANNA/PAKENE")
             action = input("Toiminto: ").lower().strip()
             if action == "hyökkää":
                 if player["inventory"]["sword"]:
@@ -105,7 +127,7 @@ def fight_enemy(enemy):
                 player["inventory"]["potions"] -= 1
                 print(f"Käytät parannusjuoman ja parannat itseäsi {heal} HP:llä. Sinulla on nyt {player['health']} HP.")
             elif action == "pakene":
-                print(f"Pakeni {enemy}lta.")
+                print(f"Pakenit kauas pois ja {enemy} hukkasi sinut.")
                 return
             else:
                 print("Virheellinen komento tai ei riittävästi resursseja.")
@@ -120,20 +142,20 @@ def fight_enemy(enemy):
                 print(f"{enemy} teki {damage} vahinkoa sinulle.")
         
         if player["health"] > 0:
-            print(f"Voitit {enemy}n ja sait {enemies[enemy]['gold']} kultaa sekä {enemies[enemy]['strength']} kokemuspisteitä!")
+            print(f"Voitit {enemy} ja sait {enemies[enemy]['gold']} kultaa sekä {enemies[enemy]['strength']} kokemuspisteitä!")
             player["gold"] += enemies[enemy]["gold"]
             player["experience"] += enemies[enemy]["strength"]
             level_up()
         else:
-            print(f"Hävisit {enemy}lle ja kuolit...")
+            print(f"{enemy} voitti sinut ja kuolit... \n")
             restart_game()
 
 def shop():
     while True:
-        print("\nTervetuloa kauppaan! Mitä haluat ostaa?")
+        print(f"\nTervetuloa kauppaan! Mitä haluat ostaa? Sinulla on nyt {player['gold']} kultaa.")
         for item, info in shop_items.items():
             if item == "food" or item == "potions" or item == "keys":
-                print(f"{item.upper()} 1 kulta (sinulla on {player['inventory'][item]})")
+                print(f"{item.upper()} {info['price']} kultaa (sinulla on {player['inventory'][item]})")
             elif not info["bought"]:
                 print(f"{item.upper()} {info['price']} kultaa")
         
@@ -144,7 +166,7 @@ def shop():
                 if player["gold"] >= shop_items[choice]["price"]:
                     player["gold"] -= shop_items[choice]["price"]
                     player["inventory"][choice] += 1
-                    print(f"Ostit {choice}. Sinulla on nyt {player['inventory'][choice]} {choice}a.")
+                    print(f"Ostit {choice}. Sinulla on nyt {player['inventory'][choice]} {choice}.")
                 else:
                     print("Sinulla ei ole tarpeeksi kultaa.")
             elif player["gold"] >= shop_items[choice]["price"] and not shop_items[choice]["bought"]:
@@ -174,18 +196,22 @@ def explore_place(place):
         shop()
     elif event == "dungeon":
         if player["inventory"]["keys"] > 0:
-            player["inventory"]["keys"] -= 1
-            dungeon = random.choice(list(dungeons.keys()))
-            explore_dungeon(dungeon)
+            paatos = input(f"Haluatko käyttää avaimen? Sinulla on {player['inventory']['keys']} keys. Kyllä/ei: ")
+            if paatos == 'kyllä':
+                player["inventory"]["keys"] -= 1
+                dungeon = random.choice(list(dungeons.keys()))
+                explore_dungeon(dungeon)
+            else:
+                print('Et käytä avainta ja jatkat matkaa.')
         else:
-            print("Tarvitset avaimen päästäksesi linnaan.")
+            print("Sinulla ei ole avainta.")
     else:
         encounter = random.choice(list(enemies.keys()))
         fight_enemy(encounter)
 
 def choose_path():
     print("\nMihin suuntaan haluat mennä?")
-    directions = ["VASEN", "OIKEA", "ETEENPÄIN", "TAKAISEIN"]
+    directions = ["VASEN", "OIKEA", "ETEENPÄIN", "TAAKSEPÄIN"]
     for direction in directions:
         print(f"Komento: {direction}")
     choice = input("Suunta: ").lower().strip()
@@ -196,13 +222,14 @@ def choose_path():
         choose_path()
 
 def restart_game():
-    global player
-    player = initialize_player()
     print("\nOlet kuollut ja peli alkaa uudestaan...")
     main()
 
 def main():
     print("Tervetuloa peliin!")
+    role = choose_role()
+    global player
+    player = initialize_player(role)
     while player["health"] > 0:
         choose_path()
     restart_game()
