@@ -1,4 +1,4 @@
-Heading level 1
+Ohjeistus
 ===============
 Tämä ohjelma on tekstipohjainen roolipeli, jossa pelaaja seikkailee fantasiamaailmassa. Pelaaja valitsee roolinsa (velho, ritari tai seikkailija), kohtaa erilaisia vihollisia, tutkii paikkoja, käy kaupassa ja yrittää selviytyä hengissä. Pelaajan tehtävänä on kerätä kultaa, kokemuspisteitä ja tasoja samalla kun hän kohtaa erilaisia haasteita ja vaaroja.
 
@@ -12,7 +12,8 @@ Kauppa: Pelaaja voi käydä kaupassa ostamassa varusteita ja esineitä, jotka au
 
 Tasojen nousu: Pelaaja voi kerätä kokemuspisteitä ja nousta tasoja, mikä parantaa hänen kykyjään ja terveyttään.
 
-
+Käynnistysohjeet
+---------------
 
 Varmista, että sinulla on Python asennettuna tietokoneellesi.
 
