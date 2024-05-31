@@ -3,7 +3,7 @@ import random
 # Pelaajan alkutiedot roolin mukaan
 def initialize_player(role):
     base_player = {
-        "health": 100,
+        "health": 40,
         "gold": 0,
         "inventory": {
             "miekka": False,
@@ -18,10 +18,10 @@ def initialize_player(role):
         "level": 1
     }
     if role == "velho":
-        base_player["health"] = 80
+        base_player["health"] = 20
         base_player["inventory"]["taikajuoma"] = 3
     elif role == "ritari":
-        base_player["health"] = 120
+        base_player["health"] = 40
         base_player["inventory"]["miekka"] = True
         shop_items["miekka"]["bought"] = True 
     elif role == "seikkailija":
