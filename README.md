@@ -34,3 +34,8 @@ https://mermaid.live/view#pako:eNpdU8Fu4jAQ_RXLZ4qgITRkpZXaQlvKtlBge9jAYdR4iRvHj
 
 Demo video
 ---------------
+
+
+Tekijät
+---------------
+Julius Piirainen, Niilo Syvänen, Onni Pajarinen
