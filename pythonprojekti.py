@@ -42,7 +42,7 @@ def choose_role():
         choice = input("Rooli: ").lower().strip()
     return choice
 
-# Vihollinen lista ja lore
+# Vihollis lista ja lore
 enemies = {
     "Rotta": {"health": 5, "gold": 1, "lore": "Pieni rotta, joka etsii ruokaa.", "strength": 1},
     "Käärme": {"health": 8, "gold": 2, "lore": "Vaarallinen käärme, joka lymyilee ruohikossa.", "strength": 1},
