@@ -1,3 +1,5 @@
+Heading level 1
+===============
 Tämä ohjelma on tekstipohjainen roolipeli, jossa pelaaja seikkailee fantasiamaailmassa. Pelaaja valitsee roolinsa (velho, ritari tai seikkailija), kohtaa erilaisia vihollisia, tutkii paikkoja, käy kaupassa ja yrittää selviytyä hengissä. Pelaajan tehtävänä on kerätä kultaa, kokemuspisteitä ja tasoja samalla kun hän kohtaa erilaisia haasteita ja vaaroja.
 
 Roolin valinta: Pelaaja voi valita joko velhon, ritarin tai seikkailijan roolin, joka määrittää alkutiedot ja esineet.
